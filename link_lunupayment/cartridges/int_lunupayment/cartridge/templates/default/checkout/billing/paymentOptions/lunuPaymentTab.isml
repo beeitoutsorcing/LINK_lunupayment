@@ -1,0 +1,10 @@
+<li class="nav-item" data-method-id="${paymentOption.ID}">
+    <a class="nav-link lunu-payment-tab" data-toggle="tab" href="#lunu-payment-content" role="tab">
+        <img class="lunu-payment-option"
+                src="${URLUtils.staticURL(URLUtils.CONTEXT_LIBRARY, null, '/images/lunupayment.png')}"
+                height="32"
+                alt="${paymentOption.name}"
+                title="${paymentOption.name}"
+        />
+    </a>
+</li>

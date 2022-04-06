@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="ProcessLunuNotifications" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="processNotifications" type="custom.processNotifications" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="clearNotifications" type="custom.clearNotifications" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+		<triggers>
+            <run-recurring enabled="false">
+                <recurrence>
+                    <date-from>2022-04-04Z</date-from>
+                    <start-time>16:41:15.000Z</start-time>
+                    <interval>5m</interval>
+                    <day-of-week>
+                        <weekday>Sunday</weekday>
+                        <weekday>Wednesday</weekday>
+                        <weekday>Friday</weekday>
+                        <weekday>Saturday</weekday>
+                        <weekday>Thursday</weekday>
+                        <weekday>Tuesday</weekday>
+                        <weekday>Monday</weekday>
+                    </day-of-week>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+</jobs>

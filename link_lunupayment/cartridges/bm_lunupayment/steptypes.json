@@ -1,0 +1,47 @@
+{
+    "step-types": {
+        "script-module-step": [
+            {
+                "@type-id": "custom.processNotifications",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "module": "bm_lunupayment/cartridge/scripts/steps/processNotifications.js",
+                "function": "processNotifications",
+                "timeout-in-seconds": "5",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went OK."
+                        },
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        }
+                    ]
+                }
+            },
+            {
+                
+                "@type-id": "custom.clearNotifications",
+                "@supports-site-context": "true",
+                "@supports-organization-context": "false",
+                "module": "bm_lunupayment/cartridge/scripts/steps/processNotifications.js",
+                "function": "clearNotifications",
+                "timeout-in-seconds": "5",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went OK."
+                        },
+                        {
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

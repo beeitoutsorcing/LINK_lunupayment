@@ -1,0 +1,16 @@
+{
+    "hooks": [
+        {
+            "name": "app.payment.form.processor.lunu_payment",
+            "script": "./cartridge/scripts/hooks/payment/processor/lunu_payment_form_processor"
+        },
+        {
+            "name": "app.payment.processor.lunu_payment",
+            "script": "./cartridge/scripts/hooks/payment/processor/lunu_payment"
+        },
+        {
+            "name": "app.payment.processor.basic_credit",
+            "script": "./cartridge/scripts/hooks/payment/processor/basic_credit"
+        }
+    ]
+}

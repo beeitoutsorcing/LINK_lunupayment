@@ -1,0 +1,8 @@
+<div class="tab-pane lunu-payment-content" id="lunu-payment-content" role="tabpanel">
+    <fieldset class="payment-form-fields">
+        <input type="hidden" class="form-control" name="${pdict.forms.billingForm.paymentMethod.htmlName}"
+            value="${paymentOption.ID}" />
+    </fieldset>
+    <h2>${Resource.msg('msg.payment.lunu', 'confirmation', null)}</h2>
+    <p>${Resource.msg('msg.payment.lunu.desc', 'confirmation', null)}</p>
+</div>

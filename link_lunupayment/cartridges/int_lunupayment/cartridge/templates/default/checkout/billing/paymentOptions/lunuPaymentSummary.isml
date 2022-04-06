@@ -1,0 +1,3 @@
+<div class="lunu-payment-type">
+    <span>${Resource.msg('msg.payment.lunu.desc', 'confirmation', null)}</span>
+</div>
