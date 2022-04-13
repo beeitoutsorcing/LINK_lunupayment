@@ -5,6 +5,8 @@
         <staging-mode>no-staging</staging-mode>
         <storage-scope>organization</storage-scope>
         <key-definition attribute-id="transactionId">
+            <display-name xml:lang="x-default">Transaction ID</display-name>
+            <description xml:lang="x-default">Transaction ID</description>
             <type>string</type>
             <min-length>0</min-length>
         </key-definition>
@@ -12,24 +14,6 @@
             <attribute-definition attribute-id="amount">
                 <display-name xml:lang="x-default">Amount</display-name>
                 <description xml:lang="x-default">Amount</description>
-                <type>string</type>
-                <localizable-flag>false</localizable-flag>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
-            </attribute-definition>
-            <attribute-definition attribute-id="confirmationToken">
-                <display-name xml:lang="x-default">Confirmation Token</display-name>
-                <description xml:lang="x-default">Confirmation Token</description>
-                <type>string</type>
-                <localizable-flag>false</localizable-flag>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
-            </attribute-definition>
-            <attribute-definition attribute-id="confirmationURL">
-                <display-name xml:lang="x-default">Confirmation URL</display-name>
-                <description xml:lang="x-default">Confirmation URL</description>
                 <type>string</type>
                 <localizable-flag>false</localizable-flag>
                 <mandatory-flag>false</mandatory-flag>
@@ -129,10 +113,8 @@
                 <attribute attribute-id="test"/>
                 <attribute attribute-id="amount"/>
                 <attribute attribute-id="description"/>
-                <attribute attribute-id="confirmationToken"/>
                 <attribute attribute-id="expires"/>
                 <attribute attribute-id="currency"/>
-                <attribute attribute-id="confirmationURL"/>
                 <attribute attribute-id="orderID"/>
                 <attribute attribute-id="notificationStatus"/>
             </attribute-group>

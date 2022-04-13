@@ -200,11 +200,6 @@ server.prepend('PlaceOrder', server.middleware.https, function (req, res, next) 
         });
     }
 
-    // TODO: Ja mislim da se ovo treba obrisati
-    if (order.getCustomerEmail()) {
-        COHelpers.sendConfirmationEmail(order, req.locale.id);
-    }
-
     // Reset usingMultiShip after successful Order placement
     req.session.privacyCache.set('usingMultiShipping', false);
 
@@ -221,7 +216,6 @@ server.prepend('PlaceOrder', server.middleware.https, function (req, res, next) 
         continueUrl: widgetURL
     });
     this.emit('route:Complete', req, res);
-    return;
 });
 
 module.exports = server.exports();

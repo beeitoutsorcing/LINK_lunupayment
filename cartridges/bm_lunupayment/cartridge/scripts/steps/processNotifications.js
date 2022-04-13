@@ -24,15 +24,16 @@ function processNotifications() {
         while (searchQuery.hasNext()) {
             let notification = searchQuery.next();
             if (notification.custom.status === 'paid') {
-                const order = OrderMgr.getOrder(notification.custom.orderID);
-                if (empty(order)) {
+                let order = OrderMgr.getOrder(notification.custom.orderID);
+                if (empty(order) || order.status.value !== Order.ORDER_STATUS_CREATED) {
                     continue;
                 }
-                if (order.status.value !== Order.ORDER_STATUS_CREATED) {
-                    continue;
-                }
-                const fraudDetectionStatus = null;
-                let result = checkoutHelpers.placeOrder(order, fraudDetectionStatus, true);
+                let fraudDetectionStatus = {
+                    status: 'success',
+                    errorCode: '',
+                    errorMessage: ''
+                };;
+                let result = checkoutHelpers.placeOrder(order, fraudDetectionStatus);
                 if (result.error) {
                     Logger.info('Process Lunu payment notifications: Failed to place order {0}', notification.custom.orderID);
                     continue;

@@ -11,6 +11,7 @@
  * @returns {boolean} result of the check
  */
 function comparePaymentInformationAndOrder(paymentInformation, order, validPaymentStatuses) {
+    const Transaction = require('dw/system/Transaction');
     const Logger = require('dw/system/Logger');
 
     if (paymentInformation.shop_order_id !== order.orderNo) {
