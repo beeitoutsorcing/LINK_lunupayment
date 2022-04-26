@@ -7,9 +7,17 @@ const URLUtils = require('dw/web/URLUtils');
 const OrderMgr = require('dw/order/OrderMgr');
 const Transaction = require('dw/system/Transaction');
 const Logger = require('dw/system/Logger').getLogger('LunuLogger');
+const lunuHelpers = require('*/cartridge/scripts/helpers/lunuHelpers');
 
 server.get('Success', server.middleware.https, function (req, res, next) {
-    const order = OrderMgr.getOrder(req.session.raw.custom.orderNo, req.session.raw.custom.orderToken);
+    if (!lunuHelpers.isLunuEnabledAndActive()) {
+        return next();
+    }
+
+    const orderNo = req.session.privacyCache.get('orderNo');
+    const orderToken = req.session.privacyCache.get('orderToken');
+
+    const order = OrderMgr.getOrder(orderNo, orderToken);
     if (!order) {
         res.redirect(URLUtils.url('Cart-Show'));
         return next();
@@ -20,7 +28,14 @@ server.get('Success', server.middleware.https, function (req, res, next) {
 });
 
 server.get('Failed', server.middleware.https, function (req, res, next) {
-    const order = OrderMgr.getOrder(req.session.raw.custom.orderNo, req.session.raw.custom.orderToken);
+    if (!lunuHelpers.isLunuEnabledAndActive()) {
+        return next();
+    }
+
+    const orderNo = req.session.privacyCache.get('orderNo');
+    const orderToken = req.session.privacyCache.get('orderToken');
+
+    const order = OrderMgr.getOrder(orderNo, orderToken);
     if (!order) {
         res.redirect(URLUtils.url('Cart-Show'));
         return next();
@@ -36,14 +51,18 @@ server.get('Failed', server.middleware.https, function (req, res, next) {
 
 server.post('ChangeStatus', server.middleware.https, function (req, res, next) {
     const lunuService = require('*/cartridge/scripts/services/lunuService');
-    const lunuHelpers = require('*/cartridge/scripts/helpers/lunuHelpers');
     const jsonHelpers = require('*/cartridge/scripts/helpers/jsonHelpers');
+
+    if (!lunuHelpers.isLunuEnabledAndActive()) {
+        return next();
+    }
 
     const notification = jsonHelpers.parseJson(req.body);
     const orderID = notification.shop_order_id;
     const paymentTransactionID = notification.id;
+    const orderToken = req.httpParameterMap.token.value;
 
-    if (empty(notification) || empty(paymentTransactionID) || empty(orderID)) {
+    if (empty(notification) || empty(paymentTransactionID) || empty(orderID) || empty(orderToken)) {
         Logger.debug('Empty callback data');
         return next();
     }
@@ -63,7 +82,7 @@ server.post('ChangeStatus', server.middleware.https, function (req, res, next) {
         return next();
     }
 
-    const order = OrderMgr.getOrder(orderID);
+    const order = OrderMgr.getOrder(orderID, orderToken);
     if (empty(order)) {
         Logger.debug('Order with ID {0} does not exist', orderID);
         return next();

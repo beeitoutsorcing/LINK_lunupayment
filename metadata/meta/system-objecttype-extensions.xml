@@ -2,14 +2,31 @@
 <metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
 	<type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
-            <attribute-definition attribute-id="app_id">
-                <display-name xml:lang="x-default">App ID</display-name>
+            <attribute-definition attribute-id="LunuEnabled">
+                <display-name xml:lang="x-default">Lunu Enabled</display-name>
+                <description xml:lang="x-default">Enables/disables the Lunu integration.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="LunuAppID">
+                <display-name xml:lang="x-default">Lunu App ID</display-name>
+                <description xml:lang="x-default">Lunu App ID</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
-            <attribute-definition attribute-id="lunuWidgetURL">
+            <attribute-definition attribute-id="LunuSecretKey">
+                <display-name xml:lang="x-default">Lunu Secret Key</display-name>
+                <description xml:lang="x-default">Lunu Secret Key</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="LunuWidgetURL">
                 <display-name xml:lang="x-default">Lunu Widget URL</display-name>
                 <description xml:lang="x-default">Lunu Widget URL</description>
                 <type>string</type>
@@ -18,20 +35,14 @@
                 <min-length>0</min-length>
                 <default-value>https://widget.lunu.io/testing/#/?action=select&amp;cancel={cancelURL}&amp;success={successURL}&amp;token={token}</default-value>
             </attribute-definition>
-            <attribute-definition attribute-id="secret_key">
-                <display-name xml:lang="x-default">Secret Key</display-name>
-                <type>string</type>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
-            </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
-            <attribute-group group-id="Lunu Payment">
+            <attribute-group group-id="LUNU_PAYMENT">
                 <display-name xml:lang="x-default">Lunu Payment</display-name>
-                <attribute attribute-id="app_id"/>
-                <attribute attribute-id="secret_key"/>
-                <attribute attribute-id="lunuWidgetURL"/>
+                <attribute attribute-id="LunuEnabled"/>
+                <attribute attribute-id="LunuAppID"/>
+                <attribute attribute-id="LunuSecretKey"/>
+                <attribute attribute-id="LunuWidgetURL"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

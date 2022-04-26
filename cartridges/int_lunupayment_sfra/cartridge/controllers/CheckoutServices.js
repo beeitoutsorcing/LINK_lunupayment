@@ -24,8 +24,9 @@ server.prepend('PlaceOrder', server.middleware.https, function (req, res, next) 
     const addressHelpers = require('*/cartridge/scripts/helpers/addressHelpers');
     const validationHelpers = require('*/cartridge/scripts/helpers/basketValidationHelpers');
     const basketCalculationHelpers = require('*/cartridge/scripts/helpers/basketCalculationHelpers');
+    const lunuHelpers = require('*/cartridge/scripts/helpers/lunuHelpers');
 
-    if (session.forms.billing.paymentMethod.value !== 'LUNU') {
+    if (session.forms.billing.paymentMethod.value !== 'LUNU' || !lunuHelpers.isLunuEnabledAndActive()) {
         return next();
     }
 
@@ -204,7 +205,7 @@ server.prepend('PlaceOrder', server.middleware.https, function (req, res, next) 
     req.session.privacyCache.set('usingMultiShipping', false);
 
     const confirmationToken = req.session.privacyCache.get('confirmationToken');
-    let widgetURL = Site.current.getCustomPreferenceValue('lunuWidgetURL');
+    let widgetURL = Site.current.getCustomPreferenceValue('LunuWidgetURL');
     widgetURL = widgetURL.replace(/{successURL}/, encodeURIComponent(URLUtils.https('LunuPayment-Success')).toString());
     widgetURL = widgetURL.replace(/{cancelURL}/, encodeURIComponent(URLUtils.https('LunuPayment-Failed')).toString());
     widgetURL = widgetURL.replace(/{token}/, confirmationToken);

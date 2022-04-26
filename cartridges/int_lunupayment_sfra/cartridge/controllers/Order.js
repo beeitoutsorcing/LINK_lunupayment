@@ -28,35 +28,30 @@ const consentTracking = require('*/cartridge/scripts/middleware/consentTracking'
  * @param {category} - sensitive
  * @param {serverfunction} - get
  */
-server.replace(
+server.prepend(
     'Confirm',
     consentTracking.consent,
     server.middleware.https,
     csrfProtection.generateToken,
+    // eslint-disable-next-line consistent-return
     function (req, res, next) {
         const reportingUrlsHelper = require('*/cartridge/scripts/reportingUrls');
         const OrderMgr = require('dw/order/OrderMgr');
         const OrderModel = require('*/cartridge/models/order');
         const Locale = require('dw/util/Locale');
 
-        let order;
+        const orderNo = req.form.orderID || req.session.privacyCache.get('orderNo');
+        const orderToken = req.form.orderToken || req.session.privacyCache.get('orderToken');
 
-        const orderNo = req.form.orderID || req.session.raw.custom.orderNo;
-        const orderToken = req.form.orderToken || req.session.raw.custom.orderToken;
-        delete req.session.raw.custom.orderNo;
-        delete req.session.raw.custom.orderToken;
-
-        if (!orderNo && !orderToken) {
+        if (!orderNo || !orderToken) {
             res.render('/error', {
                 message: Resource.msg('error.confirmation.error', 'confirmation', null)
             });
 
             return next();
-        } else if (orderNo && orderToken) {
-            order = OrderMgr.getOrder(orderNo, orderToken);
-        } else {
-            order = OrderMgr.getOrder(orderNo);
         }
+
+        const order = OrderMgr.getOrder(orderNo, orderToken);
 
         if (!order || order.customer.ID !== req.currentCustomer.raw.ID) {
             res.render('/error', {
@@ -65,7 +60,7 @@ server.replace(
 
             return next();
         }
-        const lastOrderID = Object.prototype.hasOwnProperty.call(req.session.raw.custom, 'orderNo') ? req.session.raw.custom.orderID : null;
+        const lastOrderID = Object.prototype.hasOwnProperty.call(req.session.raw.custom, 'orderID') ? req.session.raw.custom.orderID : null;
         if (lastOrderID === req.querystring.ID) {
             res.redirect(URLUtils.url('Home-Show'));
             return next();
@@ -103,8 +98,9 @@ server.replace(
                 orderUUID: order.getUUID()
             });
         }
-        req.session.raw.custom.orderID = req.querystring.ID; // eslint-disable-line no-param-reassign
-        return next();
+        req.session.raw.custom.orderID = orderNo; // eslint-disable-line no-param-reassign
+
+        this.emit('route:Complete', req, res);
     }
 );
 

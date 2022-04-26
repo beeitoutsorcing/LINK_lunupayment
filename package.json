@@ -1,7 +1,7 @@
 {
   "name": "link_lunupayment",
-  "version": "6.0.0",
-  "description": "Link Lunu Payment",
+  "version": "22.1.0",
+  "description": "LINK Lunu Payment",
   "main": "index.js",
   "engines": {
     "node": ">=4.0"

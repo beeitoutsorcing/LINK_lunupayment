@@ -12,7 +12,7 @@
  */
 function comparePaymentInformationAndOrder(paymentInformation, order, validPaymentStatuses) {
     const Transaction = require('dw/system/Transaction');
-    const Logger = require('dw/system/Logger');
+    const Logger = require('dw/system/Logger').getLogger('LunuLogger');
 
     if (paymentInformation.shop_order_id !== order.orderNo) {
         Logger.debug('Incorrect order number. Callback ammount {0} - Order amount {1}', paymentInformation.shop_order_id, order.orderNo);
@@ -48,18 +48,31 @@ function comparePaymentInformationAndOrder(paymentInformation, order, validPayme
 function getOrCreatePaymentNotificationCO(transactionId) {
     const Transaction = require('dw/system/Transaction');
     const CustomObjectMgr = require('dw/object/CustomObjectMgr');
-    let paymentNotificationCO = CustomObjectMgr.getCustomObject('lunuPaymentNotification', transactionId);
+    let paymentNotificationCO = CustomObjectMgr.getCustomObject('LunuPaymentNotification', transactionId);
 
     if (!paymentNotificationCO) {
         Transaction.wrap(function () {
-            paymentNotificationCO = CustomObjectMgr.createCustomObject('lunuPaymentNotification', transactionId);
+            paymentNotificationCO = CustomObjectMgr.createCustomObject('LunuPaymentNotification', transactionId);
         });
     }
 
     return paymentNotificationCO;
 }
 
+/**
+ * Get the enabled status from the integration and the active status of the Lunu payment method
+ * @returns {boolean} Lunu payment method and integration active/enabled status
+ */
+function isLunuEnabledAndActive() {
+    const Site = require('dw/system/Site');
+    const PaymentMgr = require('dw/order/PaymentMgr');
+    const lunuPaymentMethod = PaymentMgr.getPaymentMethod('LUNU');
+
+    return Site.getCurrent().getCustomPreferenceValue('LunuEnabled') && lunuPaymentMethod.isActive();
+}
+
 module.exports = {
     getOrCreatePaymentNotificationCO: getOrCreatePaymentNotificationCO,
-    comparePaymentInformationAndOrder: comparePaymentInformationAndOrder
+    comparePaymentInformationAndOrder: comparePaymentInformationAndOrder,
+    isLunuEnabledAndActive: isLunuEnabledAndActive
 };

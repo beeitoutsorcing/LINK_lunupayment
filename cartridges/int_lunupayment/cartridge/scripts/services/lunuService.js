@@ -10,8 +10,8 @@ const jsonHelpers = require('*/cartridge/scripts/helpers/jsonHelpers');
  */
 function getBasicAuthToken() {
     const StringUtils = require('dw/util/StringUtils');
-    const appId = Site.current.getCustomPreferenceValue('app_id');
-    const secretKey = Site.current.getCustomPreferenceValue('secret_key');
+    const appId = Site.current.getCustomPreferenceValue('LunuAppID');
+    const secretKey = Site.current.getCustomPreferenceValue('LunuSecretKey');
 
     if (appId && secretKey) {
         return 'Basic ' + StringUtils.encodeBase64(appId + ':' + secretKey);
@@ -29,9 +29,10 @@ const createPaymentService = LocalServiceRegistry.createService('http.lunupaymen
             shop_order_id: order.orderNo,
             amount: order.getTotalGrossPrice().getValue(),
             amount_of_shipping: order.getShippingTotalGrossPrice().getValue(),
-            callback_url: URLUtils.https('LunuPayment-ChangeStatus').toString(),
+            callback_url: URLUtils.https('LunuPayment-ChangeStatus', 'token', order.orderToken).toString(),
             description: 'Order #' + order.orderNo,
-            expires: new Date(Date.now() + (5 * 60 * 1000)).toISOString()
+            expires: new Date(Date.now() + (5 * 60 * 1000)).toISOString(),
+            client_currency: Site.getCurrent().getDefaultCurrency()
         };
 
         service.setURL(finalUrl);
@@ -51,6 +52,13 @@ const createPaymentService = LocalServiceRegistry.createService('http.lunupaymen
             };
         }
         return null;
+    },
+    filterLogMessage: function (msg) {
+        if (msg) {
+            msg = msg.replace(/UserAgent=.*?&/, 'UserAgent=************&'); // eslint-disable-line no-param-reassign
+            msg = msg.replace(/Authorization=.*?&/, 'Authorization=************&'); // eslint-disable-line no-param-reassign
+        }
+        return msg;
     }
 });
 
@@ -72,6 +80,13 @@ const getPaymentService = LocalServiceRegistry.createService('http.lunupayment',
             return result.response;
         }
         return null;
+    },
+    filterLogMessage: function (msg) {
+        if (msg) {
+            msg = msg.replace(/UserAgent=.*?&/, 'UserAgent=************&'); // eslint-disable-line no-param-reassign
+            msg = msg.replace(/Authorization=.*?&/, 'Authorization=************&'); // eslint-disable-line no-param-reassign
+        }
+        return msg;
     }
 });
 

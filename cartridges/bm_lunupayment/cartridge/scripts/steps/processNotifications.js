@@ -17,7 +17,7 @@ const checkoutHelpers = require('*/cartridge/scripts/checkout/checkoutHelpers');
  * @returns {Status} job status
  */
 function processNotifications() {
-    const searchQuery = CustomObjectMgr.queryCustomObjects('lunuPaymentNotification', "custom.notificationStatus = 'PENDING'", null);
+    const searchQuery = CustomObjectMgr.queryCustomObjects('LunuPaymentNotification', "custom.notificationStatus = 'PENDING'", null);
     Logger.info('Process Lunu payment notifications start with count {0}', searchQuery.count);
 
     try {
@@ -66,7 +66,7 @@ function processNotifications() {
  * @returns {Status} job status
  */
 function clearNotifications() {
-    const searchQuery = CustomObjectMgr.queryCustomObjects('lunuPaymentNotification', "custom.notificationStatus = 'PROCESSED'", null);
+    const searchQuery = CustomObjectMgr.queryCustomObjects('LunuPaymentNotification', "custom.notificationStatus = 'PROCESSED'", null);
     Logger.info('Removing Processed Lunu payment Custom Objects start with count {0}', searchQuery.count);
 
     try {

@@ -51,8 +51,8 @@ function Authorize(orderNumber, paymentInstrument, paymentProcessor) {
 
         if (paymentObject && paymentObject.confirmationToken && paymentObject.transactionID) {
             session.privacy.confirmationToken = paymentObject.confirmationToken;
-            session.custom.orderNo = order.orderNo;
-            session.custom.orderToken = order.orderToken;
+            session.privacy.orderNo = order.orderNo;
+            session.privacy.orderToken = order.orderToken;
 
             Transaction.wrap(function () {
                 paymentInstrument.paymentTransaction.setTransactionID(paymentObject.transactionID);
